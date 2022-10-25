@@ -1,12 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { tap } from 'rxjs';
+import { filter, map, tap } from 'rxjs';
+import { MastheadComponent } from 'src/app/components/masthead/masthead.component';
 import { selectCounterBranch } from '..';
-import { CounterComponentEvents } from '../actions/counter.actions';
+import {
+  CounterComponentDocuments,
+  CounterComponentEvents,
+} from '../actions/counter.actions';
+import { CounterState } from '../reducers/counter.reducer';
 
 @Injectable()
 export class CounterEffects {
+  loadCountState$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(CounterComponentEvents.entered), // only care about this action
+        map(() => localStorage.getItem('count-data')), // null || "{by: 3, current: 99}"
+        filter((val) => val !== null), // stop here if it isn't in localstorage yet.
+        map((savedValue: string | null) => savedValue!), // have to force the compiler to know that this isn't null
+        map((v) => JSON.parse(v) as CounterState), // it is saved as CounterState, so I'm making the compiler happy here again
+        map((payload) => CounterComponentDocuments.state({ payload })), // dispatch an action
+      );
+    },
+    { dispatch: true },
+  );
+
   saveCountState$ = createEffect(
     () => {
       return this.actions$.pipe(

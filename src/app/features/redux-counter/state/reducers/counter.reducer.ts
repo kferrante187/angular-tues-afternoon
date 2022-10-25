@@ -1,5 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
-import { CounterComponentEvents } from '../actions/counter.actions';
+import {
+  CounterComponentDocuments,
+  CounterComponentEvents,
+} from '../actions/counter.actions';
 // Describe this state for the TypeScript
 export interface CounterState {
   current: number;
@@ -15,6 +18,7 @@ const initialState: CounterState = {
 
 export const reducer = createReducer(
   initialState,
+  on(CounterComponentDocuments.state, (_, a) => a.payload),
   on(CounterComponentEvents.by, (s, a) => ({ ...s, by: a.by })),
   on(CounterComponentEvents.reset, () => initialState),
   on(
