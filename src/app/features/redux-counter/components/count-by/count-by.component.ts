@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { selectCountingBy } from '../../state';
 import { CounterComponentEvents } from '../../state/actions/counter.actions';
 
 @Component({
@@ -8,6 +9,7 @@ import { CounterComponentEvents } from '../../state/actions/counter.actions';
   styleUrls: ['./count-by.component.css'],
 })
 export class CountByComponent {
+  by$ = this.store.select(selectCountingBy);
   constructor(private readonly store: Store) {}
 
   setCountBy(by: 1 | 3 | 5) {

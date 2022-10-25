@@ -12,6 +12,10 @@ const routes: Routes = [
         path: 'prefs',
         component: CountByComponent,
       },
+      {
+        path: '**',
+        redirectTo: 'prefs',
+      },
     ],
   },
 ];
