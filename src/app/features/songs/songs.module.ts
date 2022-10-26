@@ -8,6 +8,10 @@ import { SongsRoutingModule } from './songs-routing.module';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { StoreModule } from '@ngrx/store';
 import { FEATURE_NAME, reducers } from './state';
+import { FeatureEffects } from './state/effects/feature.effects';
+import { HttpClientModule } from '@angular/common/http';
+import { EffectsModule } from '@ngrx/effects';
+import { SongListEffects } from './state/effects/song-list.effects';
 
 @NgModule({
   declarations: [
@@ -21,6 +25,11 @@ import { FEATURE_NAME, reducers } from './state';
     CommonModule,
     SongsRoutingModule,
     StoreModule.forFeature(FEATURE_NAME, reducers),
+    HttpClientModule,
+    EffectsModule.forFeature([
+      FeatureEffects,
+      SongListEffects,
+    ]),
   ],
 })
 export class SongsModule {}
